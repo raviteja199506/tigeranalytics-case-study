@@ -1,0 +1,9 @@
+store_id,sku,product_name,price,date
+ST00001,SKU-100001,Whole Milk 1L,1.95,2026-11-03
+ST00001,SKU-100002,Sourdough Bread 800g,-4.50,2026-11-03
+ST00001,,Free Range Eggs 12pk,5.75,2026-11-03
+ST00001,SKU-100004,Arabica Coffee Beans 500g,twelve,2026-11-03
+ST00001,SKU-100005,Basmati Rice 1kg,3.29,03/11/2026
+ST 00002,SKU-100001,Whole Milk 1L,2.09,2026-11-03
+ST00002,SKU-100006,Greek Yogurt 500g,3.80
+ST00002,SKU-100007,Cheddar Cheese 250g,4.20,2026-11-03

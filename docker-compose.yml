@@ -1,0 +1,53 @@
+name: pricing-feed
+
+x-api-environment: &api-environment
+  PRICING_ENVIRONMENT: local
+  PRICING_DATABASE_URL: postgresql+psycopg://pricing:pricing@db:5432/pricing
+  PRICING_STORAGE_DIR: /data/uploads
+  PRICING_CORS_ORIGINS: '["http://localhost:8080"]'
+  PRICING_AUTH_MODE: disabled
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pricing
+      POSTGRES_USER: pricing
+      POSTGRES_PASSWORD: pricing
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pricing -d pricing"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  migrate:
+    build: ./backend
+    command: ["alembic", "upgrade", "head"]
+    environment: *api-environment
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: ./backend
+    environment: *api-environment
+    volumes:
+      - uploads:/data/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build: ./frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - api
+
+volumes:
+  db-data:
+  uploads:
